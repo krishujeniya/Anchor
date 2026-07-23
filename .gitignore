@@ -1,0 +1,18 @@
+# Node/JS dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dashboard/dist/
+dist/
+build/
+
+# OS/Editor
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore personal agent configurations (but keep the spine)
+.env
+.env.local

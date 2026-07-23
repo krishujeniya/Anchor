@@ -1,0 +1,24 @@
+name: ANCHOR Verify
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Make ANCHOR scripts executable
+      run: chmod +x .agents/skills/anchor-verify/scripts/*.sh
+
+    - name: Run ANCHOR Structural Checks
+      run: bash .agents/skills/anchor-verify/scripts/verify.sh .
+
+    - name: Run ANCHOR Health Checks
+      run: bash .agents/skills/anchor-verify/scripts/health-check.sh .
