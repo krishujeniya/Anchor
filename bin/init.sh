@@ -41,9 +41,16 @@ cat << 'EOF' > "${AGENTS_DIR}/state/CURRENT.md"
 EOF
 echo "  - Reset CURRENT.md"
 
-# 3. Clear Checkpoints (but keep .gitkeep)
-find "${AGENTS_DIR}/state/checkpoints" -type f -name "*.md" -delete
-echo "  - Cleared checkpoints/"
+# 3. Archive Checkpoints (but keep .gitkeep)
+TIMESTAMP=$(date -u +%Y%m%d%H%M%S)
+ARCHIVE_DIR="${AGENTS_DIR}/state/checkpoints/archive/${TIMESTAMP}"
+if [ -n "$(find "${AGENTS_DIR}/state/checkpoints" -maxdepth 1 -name '*.md' -print -quit)" ]; then
+  mkdir -p "$ARCHIVE_DIR"
+  mv "${AGENTS_DIR}/state/checkpoints/"*.md "$ARCHIVE_DIR/"
+  echo "  - Archived checkpoints to archive/${TIMESTAMP}/"
+else
+  echo "  - No checkpoints to archive"
+fi
 
 # 4. Clear Decisions / Drafts
 find "${AGENTS_DIR}/state/decisions" -type f -name "*.sh" -delete
