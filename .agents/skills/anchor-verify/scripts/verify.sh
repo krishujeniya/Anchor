@@ -130,7 +130,7 @@ if [ -f "$STATE_FILE" ]; then
   schema_detail=""
 
   # Required fields
-  for field in project current_gate current_milestone iteration iteration_cap token_budget tokens_used no_progress_strikes hitl_approvals last_updated last_known_commit; do
+  for field in project current_gate current_milestone iteration iteration_cap token_budget tokens_used no_progress_strikes hitl_approvals last_updated last_known_commit skill_versions; do
     if ! jq -e "has(\"$field\")" "$STATE_FILE" > /dev/null 2>&1; then
       schema_fail=1
       schema_detail="$schema_detail missing:$field"

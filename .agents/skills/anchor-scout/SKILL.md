@@ -1,5 +1,6 @@
 ---
 name: anchor-scout
+version: 1.0.0
 description: >
   Acts as an edge-case hunter during the ANALYZE gate. Deep-dives into the codebase 
   to find undocumented dependencies, security flaws, and architectural risks. 

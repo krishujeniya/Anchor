@@ -1,5 +1,6 @@
 ---
 name: anchor-draft-commit
+version: 1.0.0
 description: >
   Draft-commit wrapper for dangerous operations (delete, migrate, force-push, deploy).
   Enforces the rule that one-step irreversible actions are never permitted.

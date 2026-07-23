@@ -1,5 +1,6 @@
 ---
 name: anchor-graph
+version: 1.0.0
 description: >
   Builds and maintains context-graph.json from the codebase's import structure.
   Stores file paths and grep queries, not file contents — retrieval is just-in-time,

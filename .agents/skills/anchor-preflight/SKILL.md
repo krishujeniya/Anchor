@@ -1,5 +1,6 @@
 ---
 name: anchor-preflight
+version: 1.0.0
 description: >
   Runs before any milestone starts. Checks whether the work is already built,
   partially built, or unbuilt by reading state.json, checkpoints, and grepping

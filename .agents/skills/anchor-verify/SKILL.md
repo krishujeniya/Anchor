@@ -1,5 +1,6 @@
 ---
 name: anchor-verify
+version: 1.0.0
 description: >
   Runs as a separate context from whatever wrote the code — maker never grades
   its own work. Deterministic checks (typecheck, lint, tests) run first and are

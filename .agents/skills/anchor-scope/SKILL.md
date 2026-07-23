@@ -1,5 +1,6 @@
 ---
 name: anchor-scope
+version: 1.0.0
 description: >
   Scores task complexity before spawning subagents, and sets least-privilege
   permission scope for the task. Prevents over-parallelizing trivial work and

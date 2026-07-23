@@ -1,5 +1,6 @@
 ---
 name: anchor-orchestrator
+version: 1.0.0
 description: >
   Master router for ANCHOR's 5-gate workflow. Activates on "build", "new feature",
   "start project", or any multi-step development request. Routes work through
@@ -22,7 +23,7 @@ You are the ANCHOR orchestrator. Your job is to route every multi-step developme
 
 1. Choose a short milestone ID: `M<n>-<slug>` (e.g., `M1-quality-rules`, `M2-auth-flow`).
 2. Update `state.json`: set `current_milestone`, `current_gate` to `UNDERSTAND`, `iteration` to `1`.
-3. Create `checkpoints/<milestone-id>.md` with a header block.
+3. Create `checkpoints/<milestone-id>.md` with a header block. You MUST include a `Skill-Versions:` block in this header by copying the `skill_versions` map from `state.json`.
 4. Update `CURRENT.md` with the new target.
 5. If `anchor-scope` skill is available, run it to score task complexity. If the score is 1-5, skip directly to `IMPLEMENT` and note this in the checkpoint.
 

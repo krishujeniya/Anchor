@@ -27,6 +27,21 @@ cat << EOF > "${AGENTS_DIR}/state/state.json"
   "last_known_commit": "$(git rev-parse HEAD 2>/dev/null || echo '')"
 }
 EOF
+
+# 1.5 Extract Skill Versions
+SKILL_VERSIONS="{}"
+for skill_md in "${AGENTS_DIR}/skills"/*/SKILL.md; do
+  if [ -f "$skill_md" ]; then
+    skill_name=$(awk '/^name:/{print $2; exit}' "$skill_md")
+    skill_version=$(awk '/^version:/{print $2; exit}' "$skill_md")
+    if [ -n "$skill_name" ] && [ -n "$skill_version" ]; then
+      SKILL_VERSIONS=$(echo "$SKILL_VERSIONS" | jq --arg k "$skill_name" --arg v "$skill_version" '.[$k] = $v')
+    fi
+  fi
+done
+jq --argjson sv "$SKILL_VERSIONS" '.skill_versions = $sv' "${AGENTS_DIR}/state/state.json" > "${AGENTS_DIR}/state/state.json.tmp"
+mv "${AGENTS_DIR}/state/state.json.tmp" "${AGENTS_DIR}/state/state.json"
+
 echo "  - Reset state.json"
 
 # 2. Reset CURRENT.md
