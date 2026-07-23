@@ -1,8 +1,8 @@
 # CURRENT
-- active_gate: IMPLEMENT
-- target: M3-stress-tokens
-- iteration: 2/10
-- last_gate_result: HALT due to tokens_used >= token_budget
-- last_action: Modified README.md with real iteration 2 edit
-- next_action: wait for human feedback
+- active_gate: IDLE
+- target: none
+- iteration: 0/10
+- last_gate_result: Project initialized
+- last_action: reset state to idle
+- next_action: wait for new task
 - open_questions: none

@@ -53,13 +53,16 @@ else
 fi
 
 # 4. Archive Decisions / Drafts
+DECISIONS_ARCHIVE="${AGENTS_DIR}/state/decisions/archive/${TIMESTAMP}"
 if [ -n "$(find "${AGENTS_DIR}/state/decisions" -maxdepth 1 -type f -print -quit)" ]; then
-  mkdir -p "$ARCHIVE_DIR"
-  find "${AGENTS_DIR}/state/decisions" -maxdepth 1 -type f -exec mv {} "$ARCHIVE_DIR/" \;
-  echo "  - Archived decisions to archive/${TIMESTAMP}/"
+  mkdir -p "$DECISIONS_ARCHIVE"
+  find "${AGENTS_DIR}/state/decisions" -maxdepth 1 -type f -exec mv {} "$DECISIONS_ARCHIVE/" \;
+  echo "  - Archived decisions to decisions/archive/${TIMESTAMP}/"
 else
   echo "  - No decisions to archive"
 fi
+mkdir -p "${AGENTS_DIR}/state/decisions"
+touch "${AGENTS_DIR}/state/decisions/.gitkeep"
 
 # 5. Clear Context Graph
 echo '{"nodes": [], "edges": [], "invariants": []}' > "${AGENTS_DIR}/state/context-graph.json"
