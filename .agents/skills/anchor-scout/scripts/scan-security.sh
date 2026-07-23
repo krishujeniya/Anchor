@@ -59,6 +59,7 @@ search_files() {
         ! -path '*/node_modules/*' \
         ! -path '*/\.venv/*' \
         ! -path '*/venv/*' \
+        ! -path '*/eval_fixtures/*' \
         ! -path '*/\.agents/state/checkpoints/archive/*' \
         ! -name "*.jpg" ! -name "*.png" ! -name "*.pdf" ! -name "*.zip" -print0
     fi
