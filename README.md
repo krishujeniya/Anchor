@@ -47,3 +47,5 @@ ANCHOR lives entirely inside the `.agents/` folder of your project. It requires 
 
 <!-- Test 2 Iteration 1 Real Edit -->
 <!-- Test 2 Iteration 2 Real Edit -->
+<!-- Test 3 Iteration 1 Real Edit -->
+<!-- Test 3 Iteration 2 Real Edit -->
