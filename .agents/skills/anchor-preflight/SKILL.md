@@ -23,6 +23,15 @@ After the PLAN gate is approved and before IMPLEMENT starts. The orchestrator ca
 
 For each planned deliverable, run these checks in order:
 
+### Step 0 — Check for out-of-band drift
+
+```bash
+# Has a human edited files since ANCHOR last ran?
+bash bin/drift-check.sh
+```
+
+If drift is detected (script returns non-zero), you MUST read the drifted files to understand what changed before proceeding with your other checks. Do not ignore drift.
+
 ### Step 1 — Check state for prior completion
 
 ```bash
