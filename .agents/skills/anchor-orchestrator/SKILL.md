@@ -82,10 +82,10 @@ If the skill is not available yet (Phase 1), note "preflight: manual — skill n
     - Gate G2 progress check: is there a measurable delta from the previous iteration? If not, increment `no_progress_strikes` in `state.json`.
     - Gate G3 cost check: tokens used this iteration and cumulative.
     - Gate G4 quality check: run any available deterministic checks (typecheck/lint/test). Record command and output.
-  - Check termination conditions after every iteration:
-    - `iteration >= iteration_cap` → halt, surface to human.
-    - `tokens_used >= token_budget` → halt, surface to human.
-    - `no_progress_strikes >= 3` → halt, surface to human.
+  - Check termination conditions after every iteration. If any fire, you MUST halt, surface to human, and log telemetry (`bash bin/telemetry.sh log HALT`):
+    - `iteration >= iteration_cap`
+    - `tokens_used >= token_budget`
+    - `no_progress_strikes >= 3`
   - Update `CURRENT.md` after every iteration.
 **State update**: when implementation is complete, set `current_gate` to `VERIFY`, update `CURRENT.md`.
 
@@ -102,7 +102,7 @@ If the skill is not available yet (Phase 1), note "preflight: manual — skill n
      Present these to the human. If the human cannot answer any question, downgrade the verdict to UNCERTAIN and the milestone stays open.
   4. **Record**: append to checkpoint — full verify block with deterministic results, quiz Q&A, and final verdict (APPROVE / REJECT / UNCERTAIN).
   5. **HITL for deployment**: if this milestone is production-bound, stop and wait for human to approve deployment.
-**State update**: on APPROVE — set `current_gate` to null, `current_milestone` to null (milestone complete). Update `CURRENT.md`. On REJECT/UNCERTAIN — return to IMPLEMENT with specific feedback.
+**State update**: on APPROVE — set `current_gate` to null, `current_milestone` to null (milestone complete). Run `bash bin/telemetry.sh log COMPLETE`. Update `CURRENT.md`. On REJECT/UNCERTAIN — return to IMPLEMENT with specific feedback.
 
 ## Walkthrough artifact
 

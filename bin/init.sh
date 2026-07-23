@@ -69,5 +69,15 @@ touch "${AGENTS_DIR}/state/decisions/.gitkeep"
 echo '{"nodes": [], "edges": [], "invariants": []}' > "${AGENTS_DIR}/state/context-graph.json"
 echo "  - Cleared context-graph.json"
 
+# 6. Archive Telemetry
+if [ -f "${AGENTS_DIR}/state/telemetry.jsonl" ]; then
+  mkdir -p "${AGENTS_DIR}/state/checkpoints/archive/${TIMESTAMP}"
+  cp "${AGENTS_DIR}/state/telemetry.jsonl" "${AGENTS_DIR}/state/checkpoints/archive/${TIMESTAMP}/" || true
+  rm "${AGENTS_DIR}/state/telemetry.jsonl"
+  echo "  - Archived telemetry.jsonl"
+fi
+touch "${AGENTS_DIR}/state/telemetry.jsonl"
+echo "  - Reset telemetry.jsonl"
+
 echo ""
 echo "✅ ANCHOR is ready. You have a clean slate!"
