@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ANCHOR Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-shape shape-1"></div>
+  <div class="bg-shape shape-2"></div>
+  <div class="app-container">
+    <aside class="sidebar glass-panel">
+      <div class="sidebar-header">
+        <h1>ANCHOR ⚓</h1>
+        <p class="subtitle">Agentic Spine</p>
+      </div>
+      <nav class="nav-menu">
+        <a href="#overview" class="nav-item active" data-tab="overview">Overview</a>
+        <a href="#telemetry" class="nav-item" data-tab="telemetry">Telemetry</a>
+      </nav>
+      <div class="sidebar-status">
+        <h3>Current Status</h3>
+        <div class="status-indicator">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">IDLE</span>
+        </div>
+        <div class="gate-info"><span class="label">Gate:</span> <span class="value" id="current-gate">None</span></div>
+        <div class="gate-info"><span class="label">Milestone:</span> <span class="value" id="current-milestone">None</span></div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <h2 id="project-name">Loading Project...</h2>
+        <div class="commit-info"><span class="label">Commit:</span> <span class="value commit-hash" id="last-commit">-------</span></div>
+      </header>
+      <section id="overview" class="tab-content active">
+        <div class="cards-grid">
+          <div class="card glass-panel">
+            <div class="card-icon">⏱️</div>
+            <div class="card-data">
+              <h3>Iteration</h3>
+              <div class="value"><span id="iteration-val">0</span> / <span id="iteration-cap">0</span></div>
+            </div>
+            <div class="progress-bar"><div class="fill" id="iteration-progress"></div></div>
+          </div>
+          <div class="card glass-panel">
+            <div class="card-icon">🪙</div>
+            <div class="card-data">
+              <h3>Tokens Used</h3>
+              <div class="value"><span id="tokens-val">0</span> / <span id="tokens-budget">0</span></div>
+            </div>
+            <div class="progress-bar"><div class="fill" id="tokens-progress"></div></div>
+          </div>
+          <div class="card glass-panel">
+            <div class="card-icon">⚠️</div>
+            <div class="card-data">
+              <h3>Strikes</h3>
+              <div class="value strike-value"><span id="strikes-val">0</span> / 3</div>
+            </div>
+            <div class="strike-indicators" id="strike-dots">
+              <span class="strike-dot"></span><span class="strike-dot"></span><span class="strike-dot"></span>
+            </div>
+          </div>
+        </div>
+        <div class="section-row">
+          <div class="section-box glass-panel flex-2">
+            <h3>Skill Versions</h3>
+            <ul class="skills-list" id="skills-list"><li>Loading skills...</li></ul>
+          </div>
+          <div class="section-box glass-panel flex-1">
+            <h3>Environment</h3>
+            <div class="info-row"><span class="label">Last Updated:</span> <span class="value" id="last-updated">-</span></div>
+            <div class="info-row mt-3"><span class="label">HITL Approvals:</span> <span class="value" id="hitl-count">0</span></div>
+          </div>
+        </div>
+      </section>
+      <section id="telemetry" class="tab-content">
+        <div class="section-box glass-panel full-height">
+          <h3>Efficiency Telemetry</h3>
+          <p class="desc">A log of all agent runs, iterations, and tokens used per milestone.</p>
+          <div class="table-container">
+            <table class="telemetry-table">
+              <thead>
+                <tr><th>Milestone</th><th>Status</th><th>Iterations</th><th>Tokens Used</th><th>Avg Tokens/Iter</th></tr>
+              </thead>
+              <tbody id="telemetry-tbody">
+                <tr><td colspan="5">Loading telemetry...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -39,8 +39,16 @@ Depending on how you are starting, copy and paste one of these exact prompts int
 **Option B: For Existing Projects (You want the AI to install ANCHOR for you)**
 > *"I want to use the ANCHOR framework for this project. Please download the framework from `https://github.com/krishujeniya/Anchor` and extract the `AGENTS.md` file and the `.agents/` folder into the root of my project. Once installed, read `AGENTS.md` and strictly enforce the 5-Gate Workflow going forward."*
 
+### 3. Local Web Dashboard
+ANCHOR comes with a beautiful local web dashboard to visualize your agent's state, history, and telemetry in real-time. To launch it:
+```bash
+bash bin/dashboard.sh
+```
+Then open `http://localhost:8080/dashboard/` in your browser.
+
 ## Architecture
-ANCHOR lives entirely inside the `.agents/` folder of your project. It requires zero third-party packages to operate its core spine, relying purely on native OS tools (`bash`, `jq`, `grep`).
+ANCHOR lives entirely inside the `.agents/` folder of your project. It requires zero third-party packages to operate its core spine, relying purely on native OS tools (`bash`, `jq`, `grep`, `python3`).
 - `AGENTS.md` - The strict constitutional rules.
 - `.agents/state/` - Where the active JSON and Markdown state lives.
 - `.agents/skills/` - The isolated, targeted skills that enforce the gates.
+- `dashboard/` - The premium visualizer for ANCHOR's state.
