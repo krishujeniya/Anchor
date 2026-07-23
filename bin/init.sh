@@ -52,10 +52,14 @@ else
   echo "  - No checkpoints to archive"
 fi
 
-# 4. Clear Decisions / Drafts
-find "${AGENTS_DIR}/state/decisions" -type f -name "*.sh" -delete
-find "${AGENTS_DIR}/state/decisions" -type f -name "*.md" -delete
-echo "  - Cleared decisions/"
+# 4. Archive Decisions / Drafts
+if [ -n "$(find "${AGENTS_DIR}/state/decisions" -maxdepth 1 -type f -print -quit)" ]; then
+  mkdir -p "$ARCHIVE_DIR"
+  find "${AGENTS_DIR}/state/decisions" -maxdepth 1 -type f -exec mv {} "$ARCHIVE_DIR/" \;
+  echo "  - Archived decisions to archive/${TIMESTAMP}/"
+else
+  echo "  - No decisions to archive"
+fi
 
 # 5. Clear Context Graph
 echo '{"nodes": [], "edges": [], "invariants": []}' > "${AGENTS_DIR}/state/context-graph.json"
