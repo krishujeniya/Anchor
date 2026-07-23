@@ -111,6 +111,10 @@ After a milestone passes VERIFY with APPROVE, generate an Antigravity Walkthroug
 - How it was verified (commands run, results).
 - The quiz-me Q&A.
 
+## Rollback
+
+If a milestone goes completely off the rails, hits a hard termination condition, or the human explicitly commands a rollback, you can abort the milestone by running `bash bin/rollback.sh`. This safely reverts all codebase changes to the exact state before the milestone started and resets your context to IDLE. If the script refuses to run (e.g., due to detecting out-of-band human drift), surface the failure to the human.
+
 ## State hygiene
 
 - `state.json` is the single source of truth for progress. Update it atomically at each gate transition.
