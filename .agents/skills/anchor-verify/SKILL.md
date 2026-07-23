@@ -27,6 +27,9 @@ Run every applicable check for the project's stack. Record each command and its 
 ```bash
 # Run the verify script:
 bash .agents/skills/anchor-verify/scripts/verify.sh
+
+# If ANCHOR skills (.agents/skills/* or bin/*) were modified, also run the eval harness to check for historical regressions:
+bash bin/eval.sh
 ```
 
 The script checks:
