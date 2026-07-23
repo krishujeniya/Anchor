@@ -15,6 +15,11 @@
 
 set -uo pipefail
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "RESULT: FAIL — jq is missing. It is required for JSON verification."
+  exit 1
+fi
+
 ROOT="${1:-.}"
 ROOT=$(cd "$ROOT" && pwd)
 

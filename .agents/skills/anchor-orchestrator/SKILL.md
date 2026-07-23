@@ -24,6 +24,7 @@ You are the ANCHOR orchestrator. Your job is to route every multi-step developme
 2. Update `state.json`: set `current_milestone`, `current_gate` to `UNDERSTAND`, `iteration` to `1`.
 3. Create `checkpoints/<milestone-id>.md` with a header block.
 4. Update `CURRENT.md` with the new target.
+5. If `anchor-scope` skill is available, run it to score task complexity. If the score is 1-5, skip directly to `IMPLEMENT` and note this in the checkpoint.
 
 ## Gate 1 — UNDERSTAND
 
@@ -66,9 +67,8 @@ You are the ANCHOR orchestrator. Your job is to route every multi-step developme
    - BUILT → halt, surface existing artifact location to human. Do not rebuild.
    - PARTIAL → note what exists and adjust the implementation scope.
    - UNBUILT → proceed normally.
-2. If `anchor-scope` skill is available, run it. Record the complexity score and whether to use single agent or swarm.
 
-If neither skill is available yet (Phase 1), note "preflight: manual — skill not yet built" in the checkpoint and proceed.
+If the skill is not available yet (Phase 1), note "preflight: manual — skill not yet built" in the checkpoint and proceed.
 
 ## Gate 4 — IMPLEMENT
 

@@ -12,7 +12,7 @@ AGENTS_DIR="${PROJECT_ROOT}/.agents"
 echo "⚓ Initializing fresh ANCHOR project..."
 
 # 1. Reset state.json
-cat << 'EOF' > "${AGENTS_DIR}/state/state.json"
+cat << EOF > "${AGENTS_DIR}/state/state.json"
 {
   "project": "New ANCHOR Project",
   "current_gate": null,
