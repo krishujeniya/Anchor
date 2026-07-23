@@ -52,6 +52,37 @@ if [ "$TOTAL" -eq 0 ]; then
   echo "  (No archived checkpoints found to test)"
 fi
 
+# Phase 3: Behavioral Script Testing
+echo ""
+echo "▶️ Phase 3: Behavioral Script Testing"
+
+# 1. verify.sh on corrupt state MUST FAIL
+echo -n "  - verify.sh catches corrupt state... "
+if bash "${AGENTS_DIR}/skills/anchor-verify/scripts/verify.sh" "${PROJECT_ROOT}/.agents/eval_fixtures/corrupt_state" > /dev/null 2>&1; then
+  echo "❌ FAIL (Did not catch corruption)"
+  FAIL=$((FAIL + 1))
+else
+  echo "✅ PASS"
+fi
+
+# 2. scan-security.sh on leaked secret MUST FAIL
+echo -n "  - scan-security.sh catches leaked secret... "
+if bash "${AGENTS_DIR}/skills/anchor-scout/scripts/scan-security.sh" "${PROJECT_ROOT}/.agents/eval_fixtures/leaked_secret" > /dev/null 2>&1; then
+  echo "❌ FAIL (Did not catch secret)"
+  FAIL=$((FAIL + 1))
+else
+  echo "✅ PASS"
+fi
+
+# 3. scan-security.sh on clean project MUST PASS
+echo -n "  - scan-security.sh passes clean project... "
+if bash "${AGENTS_DIR}/skills/anchor-scout/scripts/scan-security.sh" "${PROJECT_ROOT}/.agents/eval_fixtures/clean_secret" > /dev/null 2>&1; then
+  echo "✅ PASS"
+else
+  echo "❌ FAIL (False positive)"
+  FAIL=$((FAIL + 1))
+fi
+
 echo ""
 echo "=== Eval Summary ==="
 if [ "$FAIL" -gt 0 ]; then

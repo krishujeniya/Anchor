@@ -28,7 +28,7 @@ ROOT=$(cd "$ROOT" && pwd)
 anchor_find() {
   local pattern="$1"
   # Search .agents/ tree and root-level files only, excluding .git and node_modules
-  find "$ROOT/.agents" -type f -name "$pattern" ! -path '*/.git/*' ! -path '*/node_modules/*' 2>/dev/null | sort
+  find "$ROOT/.agents" -type f -name "$pattern" ! -path '*/.git/*' ! -path '*/node_modules/*' ! -path '*/eval_fixtures/*' 2>/dev/null | sort
   find "$ROOT" -maxdepth 1 -type f -name "$pattern" 2>/dev/null | sort
 }
 
