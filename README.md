@@ -30,18 +30,7 @@ If you have cloned this repository and want to start a completely new project, r
 bash bin/init.sh
 ```
 
-### 2. The UI Dashboard
-ANCHOR comes with a beautiful, local web dashboard to monitor the agent's state, audit trails, and context graph in real-time.
-
-To run the dashboard:
-```bash
-cd dashboard
-npm install
-npm run dev
-```
-Then open `http://localhost:5173` in your browser.
-
-### 3. The Setup Prompts
+### 2. The Setup Prompts
 Depending on how you are starting, copy and paste one of these exact prompts into your AI IDE (like Antigravity, Cursor, or Windsurf) to initialize the agent:
 
 **Option A: For New Projects (You already cloned this repo)**
