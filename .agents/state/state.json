@@ -1,12 +1,12 @@
 {
   "project": "New ANCHOR Project",
   "current_gate": "IMPLEMENT",
-  "current_milestone": "M1-stress-strikes",
-  "iteration": 3,
-  "iteration_cap": 10,
+  "current_milestone": "M2-stress-cap",
+  "iteration": 2,
+  "iteration_cap": 2,
   "token_budget": 50000,
-  "tokens_used": 1500,
-  "no_progress_strikes": 3,
+  "tokens_used": 200,
+  "no_progress_strikes": 0,
   "hitl_approvals": {},
-  "last_updated": "2026-07-23T12:28:01Z"
+  "last_updated": "2026-07-23T12:31:01Z"
 }
