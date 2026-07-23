@@ -44,3 +44,6 @@ ANCHOR lives entirely inside the `.agents/` folder of your project. It requires 
 - `AGENTS.md` - The strict constitutional rules.
 - `.agents/state/` - Where the active JSON and Markdown state lives.
 - `.agents/skills/` - The isolated, targeted skills that enforce the gates.
+
+<!-- Test 2 Iteration 1 Real Edit -->
+<!-- Test 2 Iteration 2 Real Edit -->
