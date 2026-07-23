@@ -49,14 +49,20 @@ patterns=(
 
 FAIL=0
 
+LINKED_REPOS=$(jq -r '.linked_repos[]?' "$ROOT/.agents/config.json" 2>/dev/null || echo "")
+
 search_files() {
-  find "$ROOT" -type f \
-    ! -path '*/\.git/*' \
-    ! -path '*/node_modules/*' \
-    ! -path '*/\.venv/*' \
-    ! -path '*/venv/*' \
-    ! -path '*/\.agents/state/checkpoints/archive/*' \
-    ! -name "*.jpg" ! -name "*.png" ! -name "*.pdf" ! -name "*.zip" -print0
+  for target_dir in "$ROOT" $LINKED_REPOS; do
+    if [ -d "$target_dir" ]; then
+      find "$target_dir" -type f \
+        ! -path '*/\.git/*' \
+        ! -path '*/node_modules/*' \
+        ! -path '*/\.venv/*' \
+        ! -path '*/venv/*' \
+        ! -path '*/\.agents/state/checkpoints/archive/*' \
+        ! -name "*.jpg" ! -name "*.png" ! -name "*.pdf" ! -name "*.zip" -print0
+    fi
+  done
 }
 
 len=${#patterns[@]}

@@ -55,7 +55,7 @@ You are the ANCHOR orchestrator. Your job is to route every multi-step developme
 **Actions**:
   1. If `anchor-graph` skill is available, run it to build/update `context-graph.json`.
   2. Generate an Antigravity Implementation Plan artifact with:
-     - Exact files to create or modify.
+     - Exact files to create or modify (including files in `linked_repos` defined in `.agents/config.json` if cross-repo changes are required).
      - For each file: what it contains and why.
      - A concrete demo command that proves the milestone works when it's done.
 **HITL**: stop and wait for human to approve architecture. Do not proceed until they explicitly approve.

@@ -172,7 +172,7 @@ for dir in ".agents/state" ".agents/state/checkpoints" ".agents/state/decisions"
     struct_detail="$struct_detail missing:$dir/"
   fi
 done
-for file in "AGENTS.md" ".agents/state/state.json" ".agents/state/CURRENT.md" ".agents/state/context-graph.json"; do
+for file in "AGENTS.md" ".agents/state/state.json" ".agents/state/CURRENT.md" ".agents/state/context-graph.json" ".agents/config.json"; do
   if [ -f "$ROOT/$file" ]; then
     echo "  exists: $file"
   else

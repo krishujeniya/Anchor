@@ -11,6 +11,18 @@ AGENTS_DIR="${PROJECT_ROOT}/.agents"
 
 echo "⚓ Initializing fresh ANCHOR project..."
 
+# 0. Ensure config.json exists
+if [ ! -f "${AGENTS_DIR}/config.json" ]; then
+  cat << EOF > "${AGENTS_DIR}/config.json"
+{
+  "linked_repos": []
+}
+EOF
+  echo "  - Created default config.json"
+else
+  echo "  - Preserved existing config.json"
+fi
+
 # 1. Reset state.json
 cat << EOF > "${AGENTS_DIR}/state/state.json"
 {

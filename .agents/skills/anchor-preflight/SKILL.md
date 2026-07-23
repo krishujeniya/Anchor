@@ -56,8 +56,11 @@ test -f <planned-file-path> && echo "EXISTS: <planned-file-path>" || echo "MISSI
 For each function, class, or component the plan says to create:
 
 ```bash
-# Does the symbol already exist in the codebase?
-grep -rn "<symbol-name>" --include="*.ts" --include="*.js" --include="*.py" --include="*.md" . 2>/dev/null | grep -v node_modules | grep -v .git
+# Get linked repos
+LINKED=$(jq -r '.linked_repos[]?' .agents/config.json 2>/dev/null || echo "")
+
+# Does the symbol already exist in the codebase or linked repos?
+grep -rn "<symbol-name>" --include="*.ts" --include="*.js" --include="*.py" --include="*.md" . $LINKED 2>/dev/null | grep -v node_modules | grep -v .git
 ```
 
 ### Step 4 — Check for partial implementations

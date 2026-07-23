@@ -8,8 +8,8 @@
   "tokens_used": 0,
   "no_progress_strikes": 0,
   "hitl_approvals": {},
-  "last_updated": "2026-07-23T13:03:15Z",
-  "last_known_commit": "eb750ac0ca58ac8dce4524e1521a9887d3fb26f9",
+  "last_updated": "2026-07-23T13:06:43Z",
+  "last_known_commit": "8c04fa1d4548ccf5e9e055dab88fcd9431d3b6af",
   "skill_versions": {
     "anchor-draft-commit": "1.0.0",
     "anchor-graph": "1.0.0",

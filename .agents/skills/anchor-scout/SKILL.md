@@ -14,7 +14,7 @@ You are the ANCHOR Scout. Your purpose is to aggressively hunt for hidden risks,
 ## Instructions
 
 1. Read the `UNDERSTAND` Task List for the current milestone.
-2. Cross-reference the requirements against `.agents/state/context-graph.json`.
+2. Cross-reference the requirements against `.agents/state/context-graph.json`. Check `.agents/config.json` for any `linked_repos` and ensure you actively scan those linked repositories for cross-repo dependencies and risks as well.
 3. **Run the security scanner:**
 ```bash
 bash .agents/skills/anchor-scout/scripts/scan-security.sh
