@@ -23,7 +23,7 @@ cat << EOF > "${AGENTS_DIR}/state/state.json"
   "tokens_used": 0,
   "no_progress_strikes": 0,
   "hitl_approvals": {},
-  "last_updated": "$(date -u +\"%Y-%m-%dT%H:%M:%SZ\")"
+  "last_updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
 echo "  - Reset state.json"
