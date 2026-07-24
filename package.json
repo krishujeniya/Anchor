@@ -1,0 +1,11 @@
+{
+  "name": "lfim",
+  "version": "1.0.0",
+  "description": "Local File Integrity Monitor",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/lfim.test.js"
+  },
+  "author": "ANCHOR Chaos Trial",
+  "license": "MIT"
+}
