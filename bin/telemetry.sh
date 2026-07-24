@@ -1,20 +1,55 @@
 #!/usr/bin/env bash
-# telemetry.sh — ANCHOR Telemetry Logger
+# telemetry.sh — ANCHOR Telemetry Logger & Aggregator
 # Appends milestone metrics to an append-only JSONL log.
-# Usage: bash bin/telemetry.sh log <STATUS>
+# Usage:
+#   bash bin/telemetry.sh log <STATUS>
+#   bash bin/telemetry.sh aggregate
 # Example: bash bin/telemetry.sh log COMPLETE
 
 set -euo pipefail
 
+PROJECT_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+STATE_FILE="${PROJECT_ROOT}/.agents/state/state.json"
+TELEMETRY_LOG="${PROJECT_ROOT}/.agents/state/telemetry.jsonl"
+
+if [ "${1:-}" = "aggregate" ]; then
+  if [ ! -f "$TELEMETRY_LOG" ]; then
+    echo "No telemetry log found."
+    exit 0
+  fi
+  
+  echo "📊 ANCHOR Telemetry Aggregation"
+  echo "==============================="
+  
+  # Use jq to slurp the JSONL and calculate sums/averages
+  jq -s '
+    length as $total_runs |
+    (map(.tokens_used) | add // 0) as $total_tokens |
+    (map(.iterations) | add // 0) as $total_iterations |
+    {
+      total_runs: $total_runs,
+      total_tokens: $total_tokens,
+      total_iterations: $total_iterations,
+      avg_tokens: (if $total_runs > 0 then $total_tokens / $total_runs else 0 end | floor),
+      avg_iterations: (if $total_runs > 0 then $total_iterations / $total_runs else 0 end | floor)
+    } |
+    "Total Runs/Milestones Logged: \(.total_runs)\n" +
+    "Total Tokens Burned:          \(.total_tokens)\n" +
+    "Total Iterations:             \(.total_iterations)\n" +
+    "Average Tokens per Run:       \(.avg_tokens)\n" +
+    "Average Iterations per Run:   \(.avg_iterations)"
+  ' "$TELEMETRY_LOG" -r
+  
+  exit 0
+fi
+
 if [ "${1:-}" != "log" ] || [ -z "${2:-}" ]; then
   echo "Usage: $0 log <STATUS>"
+  echo "       $0 aggregate"
   exit 1
 fi
 
 STATUS="$2"
-PROJECT_ROOT=$(cd "$(dirname "$0")/.." && pwd)
-STATE_FILE="${PROJECT_ROOT}/.agents/state/state.json"
-TELEMETRY_LOG="${PROJECT_ROOT}/.agents/state/telemetry.jsonl"
 
 if [ ! -f "$STATE_FILE" ]; then
   echo "No state.json found. Cannot log telemetry."

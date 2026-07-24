@@ -30,9 +30,10 @@ fi
 # `git diff $LAST_COMMIT --name-only` shows differences between that commit and working tree.
 
 if ! git -C "$PROJECT_ROOT" cat-file -t "$LAST_COMMIT" >/dev/null 2>&1; then
-  echo "  ⚠️ Warning: last_known_commit ($LAST_COMMIT) is not a valid git object."
-  echo "     This might happen if the repo was rebased or squashed. Drift check skipped."
-  exit 0
+  echo "  ⚠️ DRIFT DETECTED! last_known_commit ($LAST_COMMIT) is not a valid git object."
+  echo "     This happens if the repo was rebased or force-pushed out-of-band."
+  echo "RESULT: FAIL (Detached state)"
+  exit 1
 fi
 
 CHANGES=$( { git -C "$PROJECT_ROOT" diff "$LAST_COMMIT" --name-only || true; git -C "$PROJECT_ROOT" ls-files --others --exclude-standard || true; } | grep -v '^\.agents/state/' | sed '/^$/d' || true )

@@ -83,6 +83,49 @@ else
   FAIL=$((FAIL + 1))
 fi
 
+# 4. scan.sh parses quote_in_filename cleanly
+echo -n "  - scan.sh handles escaped quotes... "
+if bash "${AGENTS_DIR}/skills/anchor-graph/scripts/scan.sh" "${PROJECT_ROOT}/.agents/eval_fixtures/adversarial/quote_in_filename" | jq . > /dev/null 2>&1; then
+  echo "✅ PASS"
+else
+  echo "❌ FAIL (JSON parsing broke)"
+  FAIL=$((FAIL + 1))
+fi
+
+# 5. verify.sh on malformed_skill MUST FAIL
+echo -n "  - verify.sh catches malformed skills... "
+if bash "${AGENTS_DIR}/skills/anchor-verify/scripts/verify.sh" "${PROJECT_ROOT}/.agents/eval_fixtures/adversarial/malformed_skill" > /dev/null 2>&1; then
+  echo "❌ FAIL (Did not catch malformed skill)"
+  FAIL=$((FAIL + 1))
+else
+  echo "✅ PASS"
+fi
+
+# 6. drift-check.sh on untracked file MUST FAIL
+echo -n "  - drift-check.sh catches untracked files... "
+touch "${PROJECT_ROOT}/drift_mock.tmp"
+if bash "${PROJECT_ROOT}/bin/drift-check.sh" > /dev/null 2>&1; then
+  echo "❌ FAIL (Did not catch untracked file)"
+  FAIL=$((FAIL + 1))
+else
+  echo "✅ PASS"
+fi
+rm -f "${PROJECT_ROOT}/drift_mock.tmp"
+
+# 7. drift-check.sh on stale commit MUST FAIL
+echo -n "  - drift-check.sh blocks stale/detached state... "
+STATE_FILE="${PROJECT_ROOT}/.agents/state/state.json"
+cp "$STATE_FILE" "${STATE_FILE}.bak"
+jq '.last_known_commit = "fakehash123"' "$STATE_FILE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+if bash "${PROJECT_ROOT}/bin/drift-check.sh" > /dev/null 2>&1; then
+  echo "❌ FAIL (Did not block detached state)"
+  FAIL=$((FAIL + 1))
+else
+  echo "✅ PASS"
+fi
+mv "${STATE_FILE}.bak" "$STATE_FILE"
+
+
 echo ""
 echo "=== Eval Summary ==="
 if [ "$FAIL" -gt 0 ]; then
