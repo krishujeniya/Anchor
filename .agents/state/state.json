@@ -9,7 +9,7 @@
   "no_progress_strikes": 0,
   "hitl_approvals": {},
   "last_updated": "2026-07-23T13:06:43Z",
-  "last_known_commit": "a6560ebd3bd84dc041c1a31464fd61a5054cb929",
+  "last_known_commit": "5cdb874e906fb84c1228c2a66ad0ed624c958202",
   "skill_versions": {
     "anchor-draft-commit": "1.0.0",
     "anchor-graph": "1.0.0",
