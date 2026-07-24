@@ -31,7 +31,7 @@ ANCHOR routes every multi-step development task through a strict pipeline:
 3. Antigravity read `AGENTS.md` AND `GEMINI.md` at session start. Catch: **`GEMINI.md` win on conflict, `AGENTS.md` lose.** If a `GEMINI.md` already exist in project, add one line to it pointing at AGENTS.md so no silent override happen. If no `GEMINI.md` exist, skip this, no conflict.
 4. Paste ANCHOR's install prompt (below) into agent chat once. Done — after that it run itself.
 
-**Why "invisible" is doable**: the gate language (UNDERSTAND/ANALYZE/PLAN/etc) is internal bookkeeping, not something you must expose to user. Add one instruction line telling agent to narrate progress in plain human words ("looking into it… built a plan… implementing… testing now…") instead of naming gates out loud. Discipline stay enforced, user just see normal update.
+**Why "invisible" is doable**: the gate language (UNDERSTAND/ANALYZE/PLAN/COMPACT/etc) is internal bookkeeping, not something you must expose to user. Add one instruction line telling agent to narrate progress in plain human words ("looking into it… built a plan… implementing… testing now…") instead of naming gates out loud. Discipline stay enforced, user just see normal update.
 
 **The one prompt** (paste as-is into Antigravity chat, once, in project root):
 
@@ -40,7 +40,7 @@ I want to use the ANCHOR framework for this project, but keep it invisible to me
 
 1. Download the framework from https://github.com/krishujeniya/Anchor and extract AGENTS.md and the .agents/ folder into the root of this project.
 2. If a GEMINI.md already exists here, add a line to it: "See AGENTS.md for standing engineering rules — do not override its gates." If no GEMINI.md exists, skip this step.
-3. Read AGENTS.md and strictly enforce the 5-Gate Workflow (Understand → Analyze → Plan → Implement → Verify) for every task from now on, with these adjustments:
+3. Read AGENTS.md and strictly enforce the 5.1-Gate Workflow (Understand → Analyze → Plan → Compact → Implement → Verify) for every task from now on, with these adjustments:
    - Never say gate names, skill names, or internal jargon to me. Narrate progress in plain language only ("looking into requirements", "drafted a plan", "building it", "testing now", "done, here's what changed").
    - Only interrupt me for the things AGENTS.md actually requires a human for: requirements confirmation, scope/architecture approval, production deployment, anything legal/financial/personal-data, or a dangerous op (delete/migrate/force-push). Everything else, just do it and tell me what you did afterward.
    - Before claiming anything is "done," actually run the real check (test, lint, build) and show me the real output if I ask — don't just say it works.
@@ -56,6 +56,19 @@ ANCHOR comes with a beautiful local web dashboard to visualize your agent's stat
 bash bin/dashboard.sh
 ```
 Then open `http://localhost:8080/dashboard/` in your browser.
+
+## Chaos Daemon (v1.1)
+ANCHOR includes an automated sabotage tool called the Chaos Daemon, designed to test the framework's adversarial resilience during Chaos Trials. This script should only be run when deliberately testing recovery capabilities.
+```bash
+# Inject drift (modifies a random source file)
+bash bin/chaos-inject.sh --mode drift
+
+# Corrupt state (deletes context-graph.json or modifies state.json)
+bash bin/chaos-inject.sh --mode state
+
+# Disrupt git (creates upstream merge conflicts)
+bash bin/chaos-inject.sh --mode git
+```
 
 ## Architecture
 ANCHOR lives entirely inside the `.agents/` folder of your project. It requires zero third-party packages to operate its core spine, relying purely on native OS tools (`bash`, `jq`, `grep`, `python3`).

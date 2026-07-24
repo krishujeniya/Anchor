@@ -13,6 +13,7 @@ All multi-step development work passes through five gates in order. No gate is s
 | UNDERSTAND | Explore intent, gather requirements | Task List | Human confirms requirements |
 | ANALYZE | Evaluate feasibility, risk, scope | Risk/scope note | Human approves scope and priorities |
 | PLAN | Architecture and implementation plan | Implementation Plan | Human approves architecture |
+| COMPACT | Distill context before heavy lifting | CURRENT.md state file | Autonomous — no HITL |
 | IMPLEMENT | Write code and tests | Code + checkpoints | Autonomous — no HITL |
 | VERIFY | Prove work is correct | Walkthrough + Browser Recording (if UI) | Human approves deployment |
 
@@ -59,11 +60,15 @@ All three are checked on every iteration — never just one:
 
 - **Iteration cap**: from `state.json.iteration_cap`. Loop halts when reached.
 - **Token/cost budget**: from `state.json.token_budget`. Loop halts when exceeded.
-- **No-progress strikes**: 3 consecutive iterations with no quantified delta → halt and surface to human. No fourth blind retry, ever.
+- **No-progress strikes**: 3 consecutive iterations with no quantified delta → execute `bash bin/rollback.sh` to automatically restore the pre-milestone checkpoint, then surface to the human. No fourth blind retry, ever.
 
 ### 6. Context is just-in-time, not pre-loaded
 
 Store file paths and grep queries in `context-graph.json`, not file contents. Pull files on demand when needed. Do not stuff the context window with entire files "just in case." The goal is the smallest set of high-signal tokens for each step.
+
+### 6.1. Mandatory Context Compaction
+
+Before entering `IMPLEMENT`, the agent MUST execute the `COMPACT` gate by running `bin/compact.sh`. The agent must synthesize the active session's progress and `context-graph.json` into `.agents/state/CURRENT.md` to reset the context bloat before writing code.
 
 ### 7. Subagent summaries are capped
 

@@ -60,7 +60,17 @@ You are the ANCHOR orchestrator. Your job is to route every multi-step developme
      - A concrete demo command that proves the milestone works when it's done.
 **HITL**: stop and wait for human to approve architecture. Do not proceed until they explicitly approve.
 **Record**: append to checkpoint — `gate PLAN: pass, human approved architecture`.
-**State update**: set `current_gate` to `IMPLEMENT`, update `CURRENT.md`.
+**State update**: set `current_gate` to `COMPACT`, update `CURRENT.md`.
+
+## Gate 3.5 — COMPACT
+
+**Purpose**: distill context before heavy lifting.
+**Actions**:
+  1. Execute `bash bin/compact.sh`.
+  2. Synthesize the active session's progress and `context-graph.json` into the newly generated `.agents/state/CURRENT.md` skeleton to reset the context bloat.
+**HITL**: fully autonomous. No HITL gate here.
+**Record**: append to checkpoint — `gate COMPACT: pass, context compacted`.
+**State update**: set `current_gate` to `IMPLEMENT`.
 
 ## Pre-build checks (between PLAN and IMPLEMENT)
 
@@ -86,7 +96,7 @@ If the skill is not available yet (Phase 1), note "preflight: manual — skill n
   - Check termination conditions after every iteration. If any fire, you MUST halt, surface to human, and log telemetry (`bash bin/telemetry.sh log HALT`):
     - `iteration >= iteration_cap`
     - `tokens_used >= token_budget`
-    - `no_progress_strikes >= 3`
+    - `no_progress_strikes >= 3` → execute `bash bin/rollback.sh` to automatically restore the pre-milestone checkpoint, then surface to the human.
   - Update `CURRENT.md` after every iteration.
 **State update**: when implementation is complete, set `current_gate` to `VERIFY`, update `CURRENT.md`.
 

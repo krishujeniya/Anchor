@@ -1,7 +1,7 @@
 {
-  "name": "lfim",
-  "version": "1.0.0",
-  "description": "Local File Integrity Monitor",
+  "name": "anchor",
+  "version": "1.1.0",
+  "description": "Agentic IDE Development Spine",
   "main": "src/index.js",
   "scripts": {
     "test": "node test/lfim.test.js"

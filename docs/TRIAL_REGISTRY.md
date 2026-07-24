@@ -7,8 +7,8 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
 | Trial ID | Status | Target | Framework Version | Date |
 |----------|--------|--------|-------------------|------|
 | CT-001 | Complete | LFIM (Greenfield Node.js CLI) | v1.0 | 2026-07-24 |
-| CT-002 | Planned | Papermill (Python) | v1.0 | TBD |
-| CT-003 | Planned | TBD (Adversarial Environment) | v1.0 | TBD |
+| CT-002 | Complete | Papermill (Python) | v1.0 | 2026-07-24 |
+| CT-003 | Complete | Papermill (Adversarial Environment) | v1.0 | 2026-07-24 |
 
 ---
 
@@ -39,7 +39,7 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
 
 ---
 
-### CT-002: Legacy Codebase Context Navigation (Planned)
+### CT-002: Legacy Codebase Context Navigation
 
 - **Target Repository**: Papermill (Python)
 - **Selection Criteria**:
@@ -55,17 +55,39 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
   - H6 (Scope Stability): Once out of PLAN, implementation does not require major scope expansion unless justified by new evidence.
 - **Trial-Specific Rules**:
   - *Strict Context Scoping*: During IMPLEMENT, no reading unrelated files unless justified by new evidence. Every new file opened after PLAN must have a recorded reason (e.g., test failure, newly discovered dependency).
-- **Pre-Registered Scorecard Template**:
-  - *Governance*: Gates completed, Gates skipped, Human interventions, Resume events, Drift events
-  - *Context*: Files analyzed, Files planned, Files modified, Planning precision, Context expansion, Scope expansions
-  - *Engineering*: Tests passed, VERIFY failures, False VERIFY passes, Rework iterations, Token usage
-  - *Evidence*: Framework defects discovered, Candidate improvements, Improvements promoted, Opinions rejected
-- **Record**: *Awaiting Execution*
+- **Final Scorecard**:
+  - *Governance*: 5/5 gates completed, 0 skipped, 1 baseline verification delay (passed).
+  - *Context*: 4 files analyzed, 3 files planned, 3 files modified. Planning Precision: 1.0 (100%). Context Expansion: 0.75 (75%). 0 scope expansions.
+  - *Engineering*: 548 tests passed. VERIFY failures: 0. False VERIFY passes: 0. Rework iterations: 0.
+  - *Evidence*: Validated that targeted structural traversal is far more efficient than global indexing for legacy repos.
+- **Findings**:
+  - H5 (Context Efficiency) was strongly supported. The framework achieved perfect Planning Precision without over-reading files.
+  - H6 (Scope Stability) was validated. The agent accurately ruled out the `engines.py` abstraction and successfully stayed within the 3-file footprint defined in `PLAN`.
+  - Enforcing a clean baseline test suite (and waiting for environment setup) creates friction upfront but guarantees clean TDD cycles.
+- **Framework Changes Proposed**:
+  - Add Environment Readiness metrics (clone-to-test time, manual interventions, dependencies) as a standard trial metric.
+  - Add a "Discovery Log" during the `UNDERSTAND` phase.
+- **Framework Changes Accepted**:
+  - Environment Readiness and Discovery Logs adopted as methodology upgrades.
+- **Links**: `CT-002_engineering_report.md`
 
 ---
 
-### CT-003: Adversarial Robustness (Planned)
+### CT-003: Adversarial Robustness
 
-- **Target Repository**: TBD
-- **Hypotheses**: TBD
-- **Record**: *Awaiting Execution*
+- **Target Repository**: Papermill (Python)
+- **Hypotheses**: 
+  - H7 (Drift Recovery): Framework halts if human modifies files mid-IMPLEMENT.
+  - H8 (State Resilience): Framework recovers if state is corrupted.
+  - H9 (Conflict Resolution): Framework handles unexpected upstream merge conflicts gracefully.
+- **Trial Setup**: Implemented a `--global-timeout` feature touching CLI, orchestrator, and engine wrapper, opening vulnerability windows at `PLAN`, `IMPLEMENT`, and `VERIFY`.
+- **Final Scorecard**:
+  - *Governance*: 5/5 gates completed, 0 skipped.
+  - *Chaos Metrics*: 0 injections detected, 0 recovered.
+- **Findings**:
+  - The Adversary (human investigator) repeatedly approved gates without injecting out-of-band chaos (fast-forwarding).
+  - Consequently, hypotheses H7, H8, and H9 remain *untested* in practice.
+  - The framework's core 5-gate workflow remains robust under rapid human interaction.
+- **Framework Changes Proposed**:
+  - Future adversarial trials should use an automated chaos script (e.g., cron jobs that randomly delete files) rather than relying on the human to inject sabotage during HITL checkpoints.
+- **Links**: `CT-003_engineering_report.md`
