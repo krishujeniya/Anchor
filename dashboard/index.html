@@ -79,7 +79,30 @@
         </div>
       </section>
       <section id="telemetry" class="tab-content">
-        <div class="section-box glass-panel full-height">
+        <div class="cards-grid mb-3">
+          <div class="card glass-panel">
+            <div class="card-icon">📊</div>
+            <div class="card-data">
+              <h3>Total Runs</h3>
+              <div class="value"><span id="agg-runs">0</span></div>
+            </div>
+          </div>
+          <div class="card glass-panel">
+            <div class="card-icon">🪙</div>
+            <div class="card-data">
+              <h3>Total Tokens</h3>
+              <div class="value"><span id="agg-tokens">0</span></div>
+            </div>
+          </div>
+          <div class="card glass-panel">
+            <div class="card-icon">📈</div>
+            <div class="card-data">
+              <h3>Avg Tokens/Run</h3>
+              <div class="value"><span id="agg-avg-tokens">0</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="section-box glass-panel full-height mt-3">
           <h3>Efficiency Telemetry</h3>
           <p class="desc">A log of all agent runs, iterations, and tokens used per milestone.</p>
           <div class="table-container">

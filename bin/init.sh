@@ -98,10 +98,11 @@ echo "  - Cleared context-graph.json"
 
 # 6. Archive Telemetry
 if [ -f "${AGENTS_DIR}/state/telemetry.jsonl" ]; then
-  mkdir -p "${AGENTS_DIR}/state/checkpoints/archive/${TIMESTAMP}"
-  cp "${AGENTS_DIR}/state/telemetry.jsonl" "${AGENTS_DIR}/state/checkpoints/archive/${TIMESTAMP}/" || true
+  TELEMETRY_ARCHIVE="${AGENTS_DIR}/state/telemetry/archive/${TIMESTAMP}"
+  mkdir -p "$TELEMETRY_ARCHIVE"
+  cp "${AGENTS_DIR}/state/telemetry.jsonl" "${TELEMETRY_ARCHIVE}/" || true
   rm "${AGENTS_DIR}/state/telemetry.jsonl"
-  echo "  - Archived telemetry.jsonl"
+  echo "  - Archived telemetry to telemetry/archive/${TIMESTAMP}/"
 fi
 touch "${AGENTS_DIR}/state/telemetry.jsonl"
 echo "  - Reset telemetry.jsonl"

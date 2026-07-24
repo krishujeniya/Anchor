@@ -120,13 +120,19 @@ async function fetchTelemetry() {
     
     Elements.telemetryBody.innerHTML = "";
     if (lines.length === 0) {
-      Elements.telemetryBody.innerHTML = "<tr><td colspan="5">No telemetry data available.</td></tr>";
+      Elements.telemetryBody.innerHTML = "<tr><td colspan='5'>No telemetry data available.</td></tr>";
       return;
     }
+    
+    let totalRuns = 0;
+    let totalTokens = 0;
     
     lines.reverse().forEach(line => {
       try {
         const data = JSON.parse(line);
+        totalRuns++;
+        totalTokens += data.tokens_used || 0;
+        
         const tr = document.createElement("tr");
         const statusClass = data.status === "COMPLETE" ? "complete" : (data.status === "HALT" ? "halt" : "running");
         const avg = data.iteration > 0 ? Math.round(data.tokens_used / data.iteration) : 0;
@@ -141,9 +147,19 @@ async function fetchTelemetry() {
         Elements.telemetryBody.appendChild(tr);
       } catch(e) {}
     });
+    
+    // Update Aggregation Cards
+    const aggRuns = document.getElementById("agg-runs");
+    const aggTokens = document.getElementById("agg-tokens");
+    const aggAvgTokens = document.getElementById("agg-avg-tokens");
+    
+    if (aggRuns) aggRuns.innerText = totalRuns.toLocaleString();
+    if (aggTokens) aggTokens.innerText = totalTokens.toLocaleString();
+    if (aggAvgTokens) aggAvgTokens.innerText = totalRuns > 0 ? Math.floor(totalTokens / totalRuns).toLocaleString() : 0;
+    
   } catch (err) {
     console.error("Failed to load telemetry:", err);
-    Elements.telemetryBody.innerHTML = "<tr><td colspan="5">Failed to load telemetry data.</td></tr>";
+    Elements.telemetryBody.innerHTML = "<tr><td colspan='5'>Failed to load telemetry data.</td></tr>";
   }
 }
 
