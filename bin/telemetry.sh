@@ -46,3 +46,11 @@ PAYLOAD=$(jq -n \
 # Append to log
 echo "$PAYLOAD" >> "$TELEMETRY_LOG"
 echo "📡 Telemetry logged: $STATUS ($TOKENS tokens, $ITERATION iterations)"
+
+# Update last_known_commit upon COMPLETE to establish a new baseline for drift detection
+if [ "$STATUS" = "COMPLETE" ]; then
+  NEW_COMMIT=$(git -C "$PROJECT_ROOT" rev-parse HEAD 2>/dev/null || echo "")
+  if [ -n "$NEW_COMMIT" ]; then
+    jq --arg c "$NEW_COMMIT" '.last_known_commit = $c' "$STATE_FILE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+  fi
+fi

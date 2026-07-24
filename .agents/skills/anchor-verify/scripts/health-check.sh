@@ -132,7 +132,7 @@ if [ -d "$CP_DIR" ]; then
         report "INFO" "In progress: $cpname"
       fi
     fi
-  done < <(find "$CP_DIR" -name "*.md" ! -name ".gitkeep" -type f 2>/dev/null | sort)
+  done < <(find "$CP_DIR" -maxdepth 1 -name "*.md" ! -name ".gitkeep" -type f 2>/dev/null | sort)
 fi
 echo ""
 

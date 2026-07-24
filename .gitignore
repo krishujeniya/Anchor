@@ -16,3 +16,6 @@ build/
 # Ignore personal agent configurations (but keep the spine)
 .env
 .env.local
+
+# Intentional exception for eval_fixtures to test security scanner. The leaked_secret fixture is deliberately committed.
+# Do not ignore it here or remove it.

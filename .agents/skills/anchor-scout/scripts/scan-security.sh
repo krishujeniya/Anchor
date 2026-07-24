@@ -54,14 +54,18 @@ LINKED_REPOS=$(jq -r '.linked_repos[]?' "$ROOT/.agents/config.json" 2>/dev/null 
 search_files() {
   for target_dir in "$ROOT" $LINKED_REPOS; do
     if [ -d "$target_dir" ]; then
-      find "$target_dir" -type f \
-        ! -path '*/\.git/*' \
-        ! -path '*/node_modules/*' \
-        ! -path '*/\.venv/*' \
-        ! -path '*/venv/*' \
-        ! -path '*/eval_fixtures/*' \
-        ! -path '*/\.agents/state/checkpoints/archive/*' \
-        ! -name "*.jpg" ! -name "*.png" ! -name "*.pdf" ! -name "*.zip" -print0
+      local find_args=(
+        ! -path '*/\.git/*'
+        ! -path '*/node_modules/*'
+        ! -path '*/\.venv/*'
+        ! -path '*/venv/*'
+        ! -path '*/\.agents/state/checkpoints/archive/*'
+        ! -name "*.jpg" ! -name "*.png" ! -name "*.pdf" ! -name "*.zip"
+      )
+      if [[ "$target_dir" != *"eval_fixtures"* ]]; then
+        find_args+=( ! -path '*/eval_fixtures/*' )
+      fi
+      find "$target_dir" -type f "${find_args[@]}" -print0
     fi
   done
 }

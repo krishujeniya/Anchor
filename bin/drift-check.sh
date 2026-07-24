@@ -35,7 +35,7 @@ if ! git -C "$PROJECT_ROOT" cat-file -t "$LAST_COMMIT" >/dev/null 2>&1; then
   exit 0
 fi
 
-CHANGES=$(git -C "$PROJECT_ROOT" diff "$LAST_COMMIT" --name-only | grep -v '^\.agents/state/' || true)
+CHANGES=$( { git -C "$PROJECT_ROOT" diff "$LAST_COMMIT" --name-only || true; git -C "$PROJECT_ROOT" ls-files --others --exclude-standard || true; } | grep -v '^\.agents/state/' | sed '/^$/d' || true )
 
 if [ -n "$CHANGES" ]; then
   echo "  ⚠️ DRIFT DETECTED!"
