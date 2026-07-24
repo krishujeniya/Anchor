@@ -7,7 +7,7 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
 | Trial ID | Status | Target | Framework Version | Date |
 |----------|--------|--------|-------------------|------|
 | CT-001 | Complete | LFIM (Greenfield Node.js CLI) | v1.0 | 2026-07-24 |
-| CT-002 | Planned | TBD (Legacy Codebase) | v1.0 | TBD |
+| CT-002 | Planned | Papermill (Python) | v1.0 | TBD |
 | CT-003 | Planned | TBD (Adversarial Environment) | v1.0 | TBD |
 
 ---
@@ -41,7 +41,7 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
 
 ### CT-002: Legacy Codebase Context Navigation (Planned)
 
-- **Target Repository**: TBD
+- **Target Repository**: Papermill (Python)
 - **Selection Criteria**:
   - *Required*: Existing Git history, active tests, multiple modules, 10k-100k LOC, existing bugs/feature requests, clear architecture.
   - *Preferred*: Real users/contributors, CI configured, documentation present.
@@ -51,6 +51,7 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
   - The 5-gate workflow scales without excessive friction on an existing codebase.
   - Quiz-Me remains effective when implementation spans dozens of files.
   - Resume quality remains high after long interruptions and context switches.
+  - H5: ANCHOR should analyze only the code necessary to complete the assigned task, rather than attempting to understand the entire repository.
 - **Record**: *Awaiting Execution*
 
 ---
