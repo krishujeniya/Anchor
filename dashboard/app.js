@@ -145,7 +145,12 @@ async function fetchTelemetry() {
           <td>~${avg.toLocaleString()}</td>
         `;
         Elements.telemetryBody.appendChild(tr);
-      } catch(e) {}
+      } catch(e) {
+        console.warn("Malformed telemetry row:", line);
+        const errTr = document.createElement("tr");
+        errTr.innerHTML = `<td colspan="5" style="color:var(--danger)">⚠️ Malformed telemetry row detected</td>`;
+        Elements.telemetryBody.appendChild(errTr);
+      }
     });
     
     // Update Aggregation Cards

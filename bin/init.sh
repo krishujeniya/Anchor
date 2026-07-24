@@ -11,6 +11,11 @@ AGENTS_DIR="${PROJECT_ROOT}/.agents"
 
 echo "⚓ Initializing fresh ANCHOR project..."
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "❌ Error: 'jq' is not installed. ANCHOR requires jq to parse state."
+  exit 1
+fi
+
 # 0. Ensure config.json exists
 if [ ! -f "${AGENTS_DIR}/config.json" ]; then
   cat << EOF > "${AGENTS_DIR}/config.json"
@@ -97,12 +102,15 @@ echo '{"nodes": [], "edges": [], "invariants": []}' > "${AGENTS_DIR}/state/conte
 echo "  - Cleared context-graph.json"
 
 # 6. Archive Telemetry
+TELEMETRY_ARCHIVE="${AGENTS_DIR}/state/telemetry/archive/${TIMESTAMP}"
+mkdir -p "$TELEMETRY_ARCHIVE"
+
 if [ -f "${AGENTS_DIR}/state/telemetry.jsonl" ]; then
-  TELEMETRY_ARCHIVE="${AGENTS_DIR}/state/telemetry/archive/${TIMESTAMP}"
-  mkdir -p "$TELEMETRY_ARCHIVE"
   cp "${AGENTS_DIR}/state/telemetry.jsonl" "${TELEMETRY_ARCHIVE}/" || true
   rm "${AGENTS_DIR}/state/telemetry.jsonl"
   echo "  - Archived telemetry to telemetry/archive/${TIMESTAMP}/"
+else
+  echo "  - No telemetry to archive"
 fi
 touch "${AGENTS_DIR}/state/telemetry.jsonl"
 echo "  - Reset telemetry.jsonl"
