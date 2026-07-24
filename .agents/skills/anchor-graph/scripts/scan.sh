@@ -25,22 +25,22 @@ has_md=false
 has_sh=false
 
 find "$ROOT" -maxdepth 5 -type f \( -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" \) \
-  ! -path "*/node_modules/*" ! -path "*/.git/*" | head -1 | grep -q . && has_js=true || true
+  ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | head -1 | grep -q . && has_js=true || true
 find "$ROOT" -maxdepth 5 -type f -name "*.py" \
-  ! -path "*/.git/*" | head -1 | grep -q . && has_py=true || true
+  ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | head -1 | grep -q . && has_py=true || true
 find "$ROOT" -maxdepth 5 -type f -name "*.go" \
-  ! -path "*/.git/*" | head -1 | grep -q . && has_go=true || true
+  ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | head -1 | grep -q . && has_go=true || true
 find "$ROOT" -maxdepth 5 -type f -name "*.md" \
-  ! -path "*/.git/*" ! -path "*/node_modules/*" | head -1 | grep -q . && has_md=true || true
+  ! -path "*/.git/*" ! -path "*/node_modules/*" ! -path "*/eval_fixtures/*" | head -1 | grep -q . && has_md=true || true
 find "$ROOT" -maxdepth 5 -type f -name "*.sh" \
-  ! -path "*/.git/*" | head -1 | grep -q . && has_sh=true || true
+  ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | head -1 | grep -q . && has_sh=true || true
 
 # --- Collect nodes ---
 find "$ROOT" -maxdepth 5 -type f \( \
   -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" \
   -o -name "*.py" -o -name "*.go" \
   -o -name "*.md" -o -name "*.sh" -o -name "*.json" \
-  \) ! -path "*/.git/*" ! -path "*/node_modules/*" ! -path "*/.gitkeep" \
+  \) ! -path "*/.git/*" ! -path "*/node_modules/*" ! -path "*/eval_fixtures/*" ! -path "*/.gitkeep" \
   | sort | while read -r filepath; do
     relpath="${filepath#"$ROOT"/}"
     ext="${filepath##*.}"
@@ -75,7 +75,7 @@ done > "$NODES_TMP"
 # JS/TS: import ... from '...' and require('...')
 if $has_js; then
   find "$ROOT" -maxdepth 5 -type f \( -name "*.js" -o -name "*.ts" -o -name "*.jsx" -o -name "*.tsx" \) \
-    ! -path "*/node_modules/*" ! -path "*/.git/*" | while read -r filepath; do
+    ! -path "*/node_modules/*" ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | while read -r filepath; do
       relpath="${filepath#"$ROOT"/}"
       # import ... from '...'
       grep -oP "from\s+['\"](\./[^'\"]+)['\"]" "$filepath" 2>/dev/null | \
@@ -92,7 +92,7 @@ fi
 
 # Python: import X, from X import Y
 if $has_py; then
-  find "$ROOT" -maxdepth 5 -type f -name "*.py" ! -path "*/.git/*" | while read -r filepath; do
+  find "$ROOT" -maxdepth 5 -type f -name "*.py" ! -path "*/.git/*" ! -path "*/eval_fixtures/*" | while read -r filepath; do
     relpath="${filepath#"$ROOT"/}"
     grep -oP "^\s*(from|import)\s+([a-zA-Z0-9_.]+)" "$filepath" 2>/dev/null | \
       sed 's/^\s*from\s*//;s/^\s*import\s*//' | \
@@ -104,7 +104,7 @@ fi
 
 # Markdown: file references like [text](file/path) or backtick `file/path`
 if $has_md; then
-  find "$ROOT" -maxdepth 5 -type f -name "*.md" ! -path "*/.git/*" ! -path "*/node_modules/*" | while read -r filepath; do
+  find "$ROOT" -maxdepth 5 -type f -name "*.md" ! -path "*/.git/*" ! -path "*/eval_fixtures/*" ! -path "*/node_modules/*" | while read -r filepath; do
     relpath="${filepath#"$ROOT"/}"
     # Markdown links to local files: [text](path/to/file)
     grep -oP '\]\((?!https?://|#)([^)]+)\)' "$filepath" 2>/dev/null | \
@@ -120,22 +120,10 @@ if $has_md; then
 fi
 
 # --- Output JSON ---
-echo "{"
-echo '  "nodes": ['
-first=true
-while IFS='|' read -r path ntype; do
-  if $first; then first=false; else echo ","; fi
-  printf '    {"id": "%s", "type": "%s"}' "$path" "$ntype"
-done < "$NODES_TMP"
-echo ""
-echo "  ],"
-echo '  "edges": ['
-first=true
-while IFS='|' read -r from to etype; do
-  if $first; then first=false; else echo ","; fi
-  printf '    {"from": "%s", "to": "%s", "type": "%s"}' "$from" "$to" "$etype"
-done < "$EDGES_TMP"
-echo ""
-echo "  ],"
-echo '  "invariants": []'
-echo "}"
+jq -R -s -c '[split("\n")[] | select(length > 0) | split("|") | {id: .[0], type: .[1]}]' "$NODES_TMP" > "${NODES_TMP}.json"
+jq -R -s -c '[split("\n")[] | select(length > 0) | split("|") | {from: .[0], to: .[1], type: .[2]}]' "$EDGES_TMP" > "${EDGES_TMP}.json"
+
+jq -n \
+  --slurpfile nodes "${NODES_TMP}.json" \
+  --slurpfile edges "${EDGES_TMP}.json" \
+  '{nodes: $nodes[0], edges: $edges[0], invariants: []}'
