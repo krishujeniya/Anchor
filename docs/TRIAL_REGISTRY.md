@@ -47,11 +47,19 @@ This document serves as the immutable audit log for all ANCHOR Chaos Trials. It 
   - *Preferred*: Real users/contributors, CI configured, documentation present.
   - *Avoid*: Tutorial repos, generated code, monoliths with no tests.
 - **Hypotheses**: 
-  - ANCHOR can build and maintain an accurate context graph for an unfamiliar legacy repository.
-  - The 5-gate workflow scales without excessive friction on an existing codebase.
-  - Quiz-Me remains effective when implementation spans dozens of files.
-  - Resume quality remains high after long interruptions and context switches.
-  - H5: ANCHOR should analyze only the code necessary to complete the assigned task, rather than attempting to understand the entire repository.
+  - H1: ANCHOR can build and maintain an accurate context graph for an unfamiliar legacy repository.
+  - H2: The 5-gate workflow scales without excessive friction on an existing codebase.
+  - H3: Quiz-Me remains effective when implementation spans dozens of files.
+  - H4: Resume quality remains high after long interruptions and context switches.
+  - H5 (Context Efficiency): ANCHOR analyzes only necessary code. (Measured by Planning Precision = Modified÷Planned and Context Expansion = Planned÷Analyzed).
+  - H6 (Scope Stability): Once out of PLAN, implementation does not require major scope expansion unless justified by new evidence.
+- **Trial-Specific Rules**:
+  - *Strict Context Scoping*: During IMPLEMENT, no reading unrelated files unless justified by new evidence. Every new file opened after PLAN must have a recorded reason (e.g., test failure, newly discovered dependency).
+- **Pre-Registered Scorecard Template**:
+  - *Governance*: Gates completed, Gates skipped, Human interventions, Resume events, Drift events
+  - *Context*: Files analyzed, Files planned, Files modified, Planning precision, Context expansion, Scope expansions
+  - *Engineering*: Tests passed, VERIFY failures, False VERIFY passes, Rework iterations, Token usage
+  - *Evidence*: Framework defects discovered, Candidate improvements, Improvements promoted, Opinions rejected
 - **Record**: *Awaiting Execution*
 
 ---
