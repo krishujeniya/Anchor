@@ -16,7 +16,9 @@ if [ ! -f "$STATE_FILE" ]; then
   exit 1
 fi
 
-LAST_COMMIT=$(jq -r '.last_known_commit // empty' "$STATE_FILE" 2>/dev/null || echo "")
+source "${PROJECT_ROOT}/bin/state.sh"
+
+LAST_COMMIT=$(anchor_state_get "last_known_commit" "")
 
 if [ -z "$LAST_COMMIT" ]; then
   echo "❌ No last_known_commit found in state.json. Cannot rollback safely."
@@ -46,8 +48,11 @@ echo "  - Repository restored."
 
 # Step 3: State Reset
 echo "  - Resetting ANCHOR state to IDLE..."
-jq '.current_gate = null | .current_milestone = null | .iteration = 0 | .tokens_used = 0 | .no_progress_strikes = 0' "$STATE_FILE" > "$STATE_FILE.tmp"
-mv "$STATE_FILE.tmp" "$STATE_FILE"
+anchor_state_set "current_gate" null
+anchor_state_set "current_milestone" null
+anchor_state_set "iteration" 0 "number"
+anchor_state_set "tokens_used" 0 "number"
+anchor_state_set "no_progress_strikes" 0 "number"
 
 cat << 'EOF' > "$CURRENT_FILE"
 # CURRENT

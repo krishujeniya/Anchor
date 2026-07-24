@@ -56,15 +56,17 @@ if [ ! -f "$STATE_FILE" ]; then
   exit 0
 fi
 
+source "${PROJECT_ROOT}/bin/state.sh"
+
 # Ensure log file exists
 touch "$TELEMETRY_LOG"
 
 # Extract fields
-MILESTONE=$(jq -r '.current_milestone // "unknown"' "$STATE_FILE" 2>/dev/null)
-ITERATION=$(jq -r '.iteration // 0' "$STATE_FILE" 2>/dev/null)
-TOKENS=$(jq -r '.tokens_used // 0' "$STATE_FILE" 2>/dev/null)
-STRIKES=$(jq -r '.no_progress_strikes // 0' "$STATE_FILE" 2>/dev/null)
-PROJECT=$(jq -r '.project // "unknown"' "$STATE_FILE" 2>/dev/null)
+MILESTONE=$(anchor_state_get "current_milestone" "unknown")
+ITERATION=$(anchor_state_get "iteration" 0)
+TOKENS=$(anchor_state_get "tokens_used" 0)
+STRIKES=$(anchor_state_get "no_progress_strikes" 0)
+PROJECT=$(anchor_state_get "project" "unknown")
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
 # Construct JSON payload
@@ -86,6 +88,6 @@ echo "📡 Telemetry logged: $STATUS ($TOKENS tokens, $ITERATION iterations)"
 if [ "$STATUS" = "COMPLETE" ]; then
   NEW_COMMIT=$(git -C "$PROJECT_ROOT" rev-parse HEAD 2>/dev/null || echo "")
   if [ -n "$NEW_COMMIT" ]; then
-    jq --arg c "$NEW_COMMIT" '.last_known_commit = $c' "$STATE_FILE" > "${STATE_FILE}.tmp" && mv "${STATE_FILE}.tmp" "$STATE_FILE"
+    anchor_state_set "last_known_commit" "$NEW_COMMIT" "string"
   fi
 fi

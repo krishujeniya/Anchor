@@ -15,7 +15,9 @@ if [ ! -f "$STATE_FILE" ]; then
   exit 0
 fi
 
-LAST_COMMIT=$(jq -r '.last_known_commit // empty' "$STATE_FILE" 2>/dev/null || echo "")
+source "${PROJECT_ROOT}/bin/state.sh"
+
+LAST_COMMIT=$(anchor_state_get "last_known_commit" "")
 
 if [ -z "$LAST_COMMIT" ]; then
   echo "  No last_known_commit found in state.json. Assuming no drift."
